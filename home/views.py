@@ -4,6 +4,7 @@ from .models import *
 def home(request):
 	view={}
 	view["feedback"]=Feedback.objects.all()
+
 	return render(request,'index.html',view)
 
 def about(request):
@@ -16,7 +17,10 @@ def blogsingle(request):
 	return render(request,'blog-single.html')
 
 def contact(request):
+	context={}
+	context['message']=""
 	if request.method=='POST':
+
 		name=request.POST['name']
 		email = request.POST['email']
 		subject = request.POST['subject']
@@ -27,7 +31,11 @@ def contact(request):
 			subject=subject,
 			message=message)
 		data.save()
-	return render(request,'contact.html')
+		context["message"]="file is uploded"
+		return render(request,'contact.html',context)
+	elif request.method=='GET':
+		return render(request,'contact.html',context)
+
 
 def elements(request):
 	return render(request,'elements.html')
